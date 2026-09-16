@@ -5,6 +5,7 @@ const express = require('express')
 const app = express()
 const cors = require("cors")
 const rateLimit = require('express-rate-limit')
+const helmet = require('helmet');
 
 
 app.use(express.json())
@@ -29,6 +30,7 @@ const limiter = rateLimit({
 app.use(cors())
 // set on all routes
 app.use(limiter)
+app.use(helmet());
 
 
 app.use('/', healthRoute)
