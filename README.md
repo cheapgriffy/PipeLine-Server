@@ -138,6 +138,28 @@ Change database name used for database connection and creation
 #### ``-no-account-creation``
 Forbid account creation route from making change to Database
 
+---
+
+## Deploy the server
+In both ways, **editing** ``.env`` is mandatory
+
+### Via Docker :
+- Navigate to the **project root** from a **shell**
+- Execute ``docker compose up --build -d`` to launch the containers
+
+**If no error** is present during the build, you should be able to see a 200 response to ``curl http://localhost:3000/`` and you should be good to go
+
+**If errors occurs**
+- If there's trouble while building use ``docker compose logs -f`` to global logs
+- Or if its from database initiation ``docker compose logs -f db-init``
+
+### Direct execution
+*this way consider you already have a MySQL compatible database service running
+- Navigate to the **project root** from a **shell**
+- If database is not initialized run ``npm run initiate-database``
+- Once the database is ready execute ``npm run start`` to launch the server
+
+**If no error** is present during the build, you should be able to see a 200 response to ``curl http://localhost:3000/`` and you should be good to go
 
 ## Developper Note 
 As a in-training project, this project aims to be built *AI free* to preserve learning efficacity.
