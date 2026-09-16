@@ -4,6 +4,8 @@ const { config } = require("dotenv");
 const jwt = require("jsonwebtoken");
 const configVariables = require("../config/launch.params").configVariables
 
+// Verify if 8 to 64, lowecase + upper + num and special char
+const passwordRegex = /^(?=.{8,64}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).*$/
 
 const createUser = async (req, res, next) => {
     try{
@@ -17,7 +19,7 @@ const createUser = async (req, res, next) => {
         const user_info = { username, email, password } = req.body
 
         if(!user_info.username || !user_info.email || !user_info.password){
-            res.status(400).json({
+            return res.status(400).json({
                 error: "Bad request",
                 message: "A provided field is blank",
                 template: {
@@ -25,6 +27,13 @@ const createUser = async (req, res, next) => {
                     "email": "email@example.com",
                     "password": "secret"
                 }
+            })
+        }
+
+        if(!passwordRegex.test(user_info.password)){
+            return res.status(400).json({
+                error: "Bad request",
+                message: "Password must be 8-64 characters and contain a lowercase letter, an uppercase letter, a number, and a special character"
             })
         }
 
