@@ -16,14 +16,6 @@ const scriptRoute = require('./src/routes/scripts.route')
 const userRoute = require('./src/routes/user.route')
 const healthRoute = require("./src/routes/health.route")
 
-// runned here to prevent circular dependency
-if (launchParams.INIT_DB == true) {
-    configDB.initiateDB().then(() => {
-        console.log("Exiting after database initialization.");
-        process.exit(0);
-    });
-}
-
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,   // second to minute, 15m
     max: 100,                   // during windowMs
@@ -43,12 +35,26 @@ app.use('/', healthRoute)
 app.use("/user", userRoute)
 app.use("/script", scriptRoute)
 
-configDB.testDBConnection()
-
-app.listen(launchParams.PORT, () => {
-    console.log(`
-        Server is listening at http://${launchParams.HOST}:${launchParams.PORT}
-        
-        `)
+// on async to prevent circular dependency
+const start = async () => {
+    if (launchParams.INIT_DB === true) {
+        await configDB.initiateDB()
+        console.log("Exiting after database initialization.")
+        return
     }
-)
+
+    await configDB.testDBConnection()
+
+    app.listen(launchParams.PORT, () => {
+        console.log(`
+            Server is listening at http://${launchParams.HOST}:${launchParams.PORT}
+            
+            `)
+        }
+    )
+}
+
+start().catch((error) => {
+    console.error("Unable to start the application.", error)
+    process.exit(1)
+})

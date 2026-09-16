@@ -20,9 +20,9 @@ let configVariables = {
     DB_PORT: process.env.DB_PORT || 3306,
     DB_LOGIN: process.env.DB_LOGIN || "root",
     DB_PASSWD: process.env.DB_PASSWD || "",
-    DB_NAME: "winget_serv",
+    DB_NAME: process.env.DB_NAME || "winget_serv",
     
-    DB_INIT: false
+    INIT_DB: false
 }
 
 

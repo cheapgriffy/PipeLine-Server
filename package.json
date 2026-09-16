@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
+    "initiate-database": "node app.js --init=true",
     "dev": "nodemon app.js",
     "test": "vitest"
   },
