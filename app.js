@@ -18,7 +18,7 @@ const healthRoute = require("./src/routes/health.route")
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,   // second to minute, 15m
-    max: 100,                   // during windowMs
+    max: 30,                    // during windowMs
     message: 'Too many request.',
     standardHeaders: true,      // output header limit in header
     legacyHeaders: false,       // prevent outdate header synhtax
