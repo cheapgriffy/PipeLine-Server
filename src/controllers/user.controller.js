@@ -116,7 +116,7 @@ const login = async (req, res, next) => {
         if(!user){
             return res.status(404).json({
                 error: "Creditential",
-                message: "Username's or email not found"
+                message: "Invalid credentials"
             })
         }
 
@@ -125,7 +125,7 @@ const login = async (req, res, next) => {
         if(!valid_password){
             return res.status(404).json({
                 error: "Creditential",
-                message: "Invalid password"
+                message: "Invalid credentials"
             })
         }
 
