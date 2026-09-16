@@ -6,6 +6,8 @@ const configVariables = require("../config/launch.params").configVariables
 
 // Verify if 8 to 64, lowecase + upper + num and special char
 const passwordRegex = /^(?=.{8,64}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).*$/
+const mailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+
 
 const createUser = async (req, res, next) => {
     try{
@@ -34,6 +36,12 @@ const createUser = async (req, res, next) => {
             return res.status(400).json({
                 error: "Bad request",
                 message: "Password must be 8-64 characters and contain a lowercase letter, an uppercase letter, a number, and a special character"
+            })
+        }
+        if(!mailRegex.test(user_info.email)){
+            return res.status(400).json({
+                error: "Bad Request",
+                message: "Invalid email"
             })
         }
 
